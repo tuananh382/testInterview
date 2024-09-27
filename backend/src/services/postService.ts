@@ -1,8 +1,17 @@
 import Post, { IPost } from "../models/postModel";
 
+interface GetAllPostsParams {
+    limit: number;
+    skip: number;
+    query: string;
+  }
+
 export class PostService {
-  static async getAllPosts() {
-    return await Post.find();
+  static async getAllPosts({ limit, skip, query }: GetAllPostsParams) {
+    const filter = query ? { title: { $regex: query, $options: 'i' } } : {};
+    const totalPosts = await Post.countDocuments(filter)
+    const posts = await Post.find(filter).skip(skip).limit(limit);
+    return {posts, totalPosts}
   }
 
   static async getPostById(id: string) {

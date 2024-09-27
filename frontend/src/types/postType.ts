@@ -5,4 +5,17 @@ export interface Post {
     content: string;
     created_at: number;
     tags: string[];
-  }
+}
+
+
+export interface PostState {
+    posts: Post[];
+    totalPosts: number; 
+}
+
+
+export interface FilterPost {
+    limit: number; 
+    skip: number;
+    query: string;
+}

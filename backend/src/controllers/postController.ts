@@ -4,11 +4,14 @@ import { PostService } from "../services/postService";
 export class PostController {
   static async getAllPosts(req: Request, res: Response) {
     try {
-      const posts = await PostService.getAllPosts();
-      res.json(posts);
-    } catch (error) {
-      res.status(500).json({ message: "Error fetching posts", error });
-    }
+        const limit = parseInt(req.query.limit as string) ; 
+        const skip = parseInt(req.query.skip as string) ; 
+        const query = req.query.query as string ; 
+        const {posts, totalPosts} = await PostService.getAllPosts({ limit, skip, query });
+        res.json({posts, totalPosts});
+      } catch (error) {
+        res.status(500).json({ message: "Error fetching posts", error });
+      }
   }
 
   static async getPostById(req: Request, res: Response) {
